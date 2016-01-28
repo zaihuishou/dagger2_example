@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+def libs = rootProject.ext.libraries
+def cfg = rootProject.ext.config
+
+android {
+    compileSdkVersion cfg.compileVersion
+    buildToolsVersion cfg.buildVersion
+
+    defaultConfig {
+        applicationId cfg.package
+        minSdkVersion cfg.minSdkVersion
+        targetSdkVersion cfg.targetSdkVersion
+        versionCode cfg.version_code
+        versionName cfg.version_name
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile "com.android.support:appcompat-v7:${libs.support}"
+    compile "com.android.support:design:${libs.support}"
+    //Dagger 2
+    compile "com.google.dagger:dagger:${libs.dagger2}"
+    apt "com.google.dagger:dagger-compiler:${libs.dagger2}"
+    provided "org.glassfish:javax.annotation:${libs.annotation}"
+
+    // ReactiveX
+    compile "io.reactivex:rxjava:${libs.rx}"
+    compile "io.reactivex:rxandroid:${libs.rx}"
+
+    compile "com.loopj.android:android-async-http:${libs.android_async_http}"
+}
